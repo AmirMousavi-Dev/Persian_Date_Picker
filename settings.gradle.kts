@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Persian_Date_Picker"
 include(":app")
- 
+include(":date_picker")
