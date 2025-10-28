@@ -1,0 +1,25 @@
+<resources>
+    <string name="farvardin">فروردین</string>
+    <string name="ordibehesht">اردیبهشت</string>
+    <string name="khordad">خرداد</string>
+    <string name="tir">تیر</string>
+    <string name="mordad">مرداد</string>
+    <string name="shahrivar">شهریور</string>
+    <string name="mehr">مهر</string>
+    <string name="aban">آبان</string>
+    <string name="azar">آذر</string>
+    <string name="dey">دی</string>
+    <string name="bahman">بهمن</string>
+    <string name="esfand">اسفند</string>
+
+
+    <string name="select_month">انتخاب ماه</string>
+    <string name="select_year">انتخاب سال</string>
+    <string name="select_day">انتخاب روز</string>
+    <string name="approve">تایید</string>
+    <string name="today">امروز</string>
+    <string name="cpt_cancel">انصراف</string>
+
+
+
+</resources>
