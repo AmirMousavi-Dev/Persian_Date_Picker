@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // Add the maven-publish plugin
+    `maven-publish`
+//    id("io.github.gradle-nexus.publish-plugin")
 }
 
 android {
@@ -50,4 +53,45 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                groupId = "io.github.amirmousavi-dev"
+                artifactId = "persian-date-picker"
+                version = "1.0.0"
+
+                from(components["release"])
+
+                pom {
+                    name.set("Persian Date Picker")
+                    description.set("A simple and customizable Persian (Jalali) date picker for Jetpack Compose.")
+                    url.set("https://github.com/AmirMousavi-Dev/Persian_Date_Picker")
+
+                    licenses {
+                        license {
+                            name.set("The Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("AmirMousavi-Dev")
+                            name.set("Amir Mousavi")
+                            email.set("ah.mousavi06@gmail.com")
+                        }
+                    }
+                    scm {
+                        connection.set("scm:git:github.com/AmirMousavi-Dev/Persian_Date_Picker.git")
+                        developerConnection.set("scm:git:ssh://github.com/AmirMousavi-Dev/Persian_Date_Picker.git")
+                        url.set("https://github.com/AmirMousavi-Dev/Persian_Date_Picker/tree/master")
+                    }
+                }
+            }
+        }
+
+    }
 }
