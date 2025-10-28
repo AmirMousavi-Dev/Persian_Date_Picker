@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.amirmousavi_dev.date_picker.core.DatePickerType
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.CalendarDimensions
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.ui.rememberDatePickerState
@@ -20,11 +20,11 @@ import com.amirmousavi_dev.date_picker.ui.rememberDatePickerState
 @Composable
 internal fun PersianCalendarView(
     modifier: Modifier = Modifier,
-    initialDate: JalaliCalendar?,
-    minDate: JalaliCalendar? = null,
-    maxDate: JalaliCalendar? = null,
-    onSelectDay: (JalaliCalendar) -> Unit,
-    onConfirm: (JalaliCalendar) -> Unit,
+    initialDate: PersianDate?,
+    minDate: PersianDate? = null,
+    maxDate: PersianDate? = null,
+    onSelectDay: (PersianDate) -> Unit,
+    onConfirm: (PersianDate) -> Unit,
     onDismissRequest: () -> Unit,
     colors: DatePickerColors,
     fontFamily: FontFamily
@@ -115,7 +115,7 @@ internal fun PersianCalendarView(
                     fontFamily = fontFamily,
                     modifier = Modifier.fillMaxWidth(),
                     onMonthSelected = { year, month ->
-                        state.changeMonth(JalaliCalendar(year = year, month = month, day = 1))
+                        state.changeMonth(PersianDate(year = year, month = month, day = 1))
                         state.changePickerType(DatePickerType.Day)
                     }
                 )
@@ -130,7 +130,7 @@ internal fun PersianCalendarView(
                     modifier = modifier,
                     onYearSelected = { selectedYear ->
                         state.changeYear(
-                            JalaliCalendar(selectedYear, state.displayedDate.month, 1)
+                            PersianDate(selectedYear, state.displayedDate.month, 1)
                         )
 
                         state.changePickerType(DatePickerType.Day)

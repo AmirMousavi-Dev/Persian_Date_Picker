@@ -14,14 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.amirmousavi_dev.date_picker.R
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.core.Month
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 
 @Composable
 internal fun MonthPicker(
-    displayedDate: JalaliCalendar,
-    today: JalaliCalendar,
+    displayedDate: PersianDate,
+    today: PersianDate,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier,

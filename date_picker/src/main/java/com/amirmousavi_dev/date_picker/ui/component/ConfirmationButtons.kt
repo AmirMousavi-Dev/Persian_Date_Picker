@@ -18,18 +18,18 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.amirmousavi_dev.date_picker.R
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 
 @Composable
 internal fun ConfirmationButtons(
-    selectedDate: JalaliCalendar?,
-    today: JalaliCalendar,
-    jalali: JalaliCalendar,
+    selectedDate: PersianDate?,
+    today: PersianDate,
+    jalali: PersianDate,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier,
-    onConfirm: (JalaliCalendar) -> Unit,
+    onConfirm: (PersianDate) -> Unit,
     onDismissRequest: () -> Unit,
     onGoToToday: () -> Unit
 ) {

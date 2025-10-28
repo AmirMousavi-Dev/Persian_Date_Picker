@@ -7,20 +7,20 @@ import java.util.GregorianCalendar
 import java.util.Locale
 
 /**
- * An immutable, robust representation of a date in the Jalali (Persian) calendar system.
+ * An immutable, robust representation of a date in the Persian calendar system.
  *
- * Use the factory methods in the companion object (e.g., `JalaliCalendar.now()`,
- * `JalaliCalendar.fromGregorian()`) to create instances.
+ * Use the factory methods in the companion object (e.g., `PersianDate.now()`,
+ * `PersianDate.fromGregorian()`) to create instances.
  *
- * @property year The Jalali year.
- * @property month The Jalali month (1-12).
- * @property day The Jalali day (1-31).
+ * @property year The Persian year.
+ * @property month The Persian month (1-12).
+ * @property day The Persian day (1-31).
  */
-data class JalaliCalendar(
+data class PersianDate(
     val year: Int,
     val month: Int,
     val day: Int
-) : Comparable<JalaliCalendar> {
+) : Comparable<PersianDate> {
 
     init {
         require(month in 1..12) { "Month must be between 1 and 12, but was $month" }
@@ -83,13 +83,13 @@ data class JalaliCalendar(
         get() = "$dayOfWeekString ${FormatDigits.toPersianDigits(day.toString())} $monthString"
 
     /**
-     * Returns true if the current Jalali year is a leap year.
+     * Returns true if the current Persian year is a leap year.
      */
     val isLeap: Boolean
         get() = getLeapFactor(year) == 0
 
     /**
-     * The number of days in the current Jalali month.
+     * The number of days in the current Persian month.
      */
     val monthLength: Int
         get() = when {
@@ -102,18 +102,18 @@ data class JalaliCalendar(
 
 
     /**
-     * Returns a new `JalaliCalendar` instance with the given number of days added.
+     * Returns a new `PersianDate` instance with the given number of days added.
      *
      * @param days The number of days to add (can be negative to subtract).
      */
-    fun plusDays(days: Int): JalaliCalendar {
+    fun plusDays(days: Int): PersianDate {
         val gc = toGregorian()
         gc.add(Calendar.DAY_OF_MONTH, days)
         return fromGregorian(gc)
     }
 
     /**
-     * Converts this `JalaliCalendar` instance to a `java.util.GregorianCalendar` instance.
+     * Converts this `PersianDate` instance to a `java.util.GregorianCalendar` instance.
      */
     fun toGregorian(): GregorianCalendar {
         val julianDay = toJulianDay(year, month, day)
@@ -126,7 +126,7 @@ data class JalaliCalendar(
      * @return A negative integer, zero, or a positive integer as this date is before,
      * at the same time, or after the specified date.
      */
-    override fun compareTo(other: JalaliCalendar): Int {
+    override fun compareTo(other: PersianDate): Int {
         if (year != other.year) return year.compareTo(other.year)
         if (month != other.month) return month.compareTo(other.month)
         return day.compareTo(other.day)
@@ -144,37 +144,37 @@ data class JalaliCalendar(
 
 
         /**
-         * Gets the current date in the Jalali calendar.
+         * Gets the current date in the Persian calendar.
          */
         
-        fun now(): JalaliCalendar = fromGregorian(GregorianCalendar())
+        fun now(): PersianDate = fromGregorian(GregorianCalendar())
 
         /**
-         * Creates a `JalaliCalendar` instance from a `java.util.Date` object.
+         * Creates a `PersianDate` instance from a `java.util.Date` object.
          */
         
-        fun fromDate(date: Date): JalaliCalendar {
+        fun fromDate(date: Date): PersianDate {
             val gc = GregorianCalendar()
             gc.time = date
             return fromGregorian(gc)
         }
 
         /**
-         * Creates a `JalaliCalendar` instance from a `java.util.GregorianCalendar` object.
+         * Creates a `PersianDate` instance from a `java.util.GregorianCalendar` object.
          */
         
-        fun fromGregorian(gc: GregorianCalendar): JalaliCalendar {
+        fun fromGregorian(gc: GregorianCalendar): PersianDate {
             val jd = gregorianToJulianDayNumber(gc)
             return fromJulianDay(jd)
         }
 
         /**
-         * Creates a `JalaliCalendar` instance from year, month, and day components.
+         * Creates a `PersianDate` instance from year, month, and day components.
          * This method is an alias for the data class constructor and will perform validation.
          */
         
-        fun of(year: Int, month: Int, day: Int): JalaliCalendar {
-            return JalaliCalendar(year, month, day)
+        fun of(year: Int, month: Int, day: Int): PersianDate {
+            return PersianDate(year, month, day)
         }
 
 
@@ -185,36 +185,36 @@ data class JalaliCalendar(
             1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
         )
 
-        private fun fromJulianDay(julianDayNumber: Int): JalaliCalendar {
+        private fun fromJulianDay(julianDayNumber: Int): PersianDate {
             val gc = julianDayToGregorianCalendar(julianDayNumber)
             val gregorianYear = gc[GregorianCalendar.YEAR]
 
-            var jalaliYear = gregorianYear - 621
+            var persianYear = gregorianYear - 621
 
 
-            var julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(jalaliYear))
+            var julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(persianYear))
 
             var diff = julianDayNumber - julianDayFarvardinFirst
 
             if (diff < 0) {
-                jalaliYear--
-                julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(jalaliYear))
+                persianYear--
+                julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(persianYear))
                 diff = julianDayNumber - julianDayFarvardinFirst
             }
 
-            val jalaliMonth: Int
-            val jalaliDay: Int
+            val persianMonth: Int
+            val persianDay: Int
 
             if (diff < 186) {
-                jalaliMonth = 1 + (diff / 31)
-                jalaliDay = 1 + (diff % 31)
+                persianMonth = 1 + (diff / 31)
+                persianDay = 1 + (diff % 31)
             } else {
                 val remainingDays = diff - 186
-                jalaliMonth = 7 + (remainingDays / 30)
-                jalaliDay = 1 + (remainingDays % 30)
+                persianMonth = 7 + (remainingDays / 30)
+                persianDay = 1 + (remainingDays % 30)
             }
 
-            return JalaliCalendar(jalaliYear, jalaliMonth, jalaliDay)
+            return PersianDate(persianYear, persianMonth, persianDay)
         }
 
         private fun toJulianDay(year: Int, month: Int, day: Int): Int {
@@ -249,9 +249,9 @@ data class JalaliCalendar(
             return GregorianCalendar(gregorianYear, gregorianMonth - 1, gregorianDay)
         }
 
-        private fun getGregorianFirstFarvardin(jalaliYear: Int): GregorianCalendar {
-            val gregorianYear = jalaliYear + 621
-            var jalaliLeap = -14
+        private fun getGregorianFirstFarvardin(persianYear: Int): GregorianCalendar {
+            val gregorianYear = persianYear + 621
+            var persianLeap = -14
             var jp = breaks[0]
             var marchDay = 0
 
@@ -259,30 +259,30 @@ data class JalaliCalendar(
             for (j in 1..19) {
                 val jm = breaks[j]
                 jump = jm - jp
-                if (jalaliYear < jm) {
-                    var n = jalaliYear - jp
-                    jalaliLeap += n / 33 * 8 + (n % 33 + 3) / 4
-                    if (jump % 33 == 4 && jump - n == 4) jalaliLeap++
+                if (persianYear < jm) {
+                    var n = persianYear - jp
+                    persianLeap += n / 33 * 8 + (n % 33 + 3) / 4
+                    if (jump % 33 == 4 && jump - n == 4) persianLeap++
                     val gregorianLeap = (gregorianYear / 4) - ((gregorianYear / 100 + 1) * 3 / 4) - 150
-                    marchDay = 20 + (jalaliLeap - gregorianLeap)
+                    marchDay = 20 + (persianLeap - gregorianLeap)
                     if (jump - n < 6) n = n - jump + (jump + 4) / 33 * 33
                     break
                 }
-                jalaliLeap += jump / 33 * 8 + (jump % 33) / 4
+                persianLeap += jump / 33 * 8 + (jump % 33) / 4
                 jp = jm
             }
             return GregorianCalendar(gregorianYear, 2, marchDay)
         }
 
-        private fun getLeapFactor(jalaliYear: Int): Int {
+        private fun getLeapFactor(persianYear: Int): Int {
             var leap = 0
             var jp = breaks[0]
             var jump: Int
             for (j in 1..19) {
                 val jm = breaks[j]
                 jump = jm - jp
-                if (jalaliYear < jm) {
-                    var n = jalaliYear - jp
+                if (persianYear < jm) {
+                    var n = persianYear - jp
                     if (jump - n < 6) n = n - jump + (jump + 4) / 33 * 33
                     leap = ((((n + 1) % 33) - 1) % 4)
                     if (leap == -1) leap = 4

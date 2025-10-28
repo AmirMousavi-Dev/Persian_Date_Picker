@@ -20,20 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.amirmousavi_dev.date_picker.core.DatePickerType
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.CalendarDimensions
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.util.FormatDigits
 
 @Composable
 internal fun CalendarNavigation(
-    displayedDate: JalaliCalendar,
+    displayedDate: PersianDate,
     pickerType: DatePickerType,
     dimensions: CalendarDimensions,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier,
-    onMonthChange: (JalaliCalendar) -> Unit,
+    onMonthChange: (PersianDate) -> Unit,
     onPickerTypeChange: (DatePickerType) -> Unit
 ) {
     Row(
@@ -47,9 +47,9 @@ internal fun CalendarNavigation(
             IconButton(
                 onClick = {
                     val newDate = if (displayedDate.month != 12) {
-                        JalaliCalendar(displayedDate.year, displayedDate.month + 1, 1)
+                        PersianDate(displayedDate.year, displayedDate.month + 1, 1)
                     } else {
-                        JalaliCalendar(displayedDate.year + 1, 1, 1)
+                        PersianDate(displayedDate.year + 1, 1, 1)
                     }
                     onMonthChange(newDate)
                 },
@@ -103,9 +103,9 @@ internal fun CalendarNavigation(
             IconButton(
                 onClick = {
                     val newDate = if (displayedDate.month != 1) {
-                        JalaliCalendar(displayedDate.year, displayedDate.month - 1, 1)
+                        PersianDate(displayedDate.year, displayedDate.month - 1, 1)
                     } else {
-                        JalaliCalendar(displayedDate.year - 1, 12, 1)
+                        PersianDate(displayedDate.year - 1, 12, 1)
                     }
                     onMonthChange(newDate)
                 },

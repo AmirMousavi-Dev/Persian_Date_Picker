@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.amirmousavi_dev.date_picker.core.DatePickerType
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 
 internal class DatePickerState(
-    initialDate: JalaliCalendar? = null
+    initialDate: PersianDate? = null
 ) {
-    val today = JalaliCalendar.now()
+    val today = PersianDate.now()
 
 
     var displayedDate by mutableStateOf(initialDate ?: today)
@@ -25,15 +25,15 @@ internal class DatePickerState(
 
 
 
-    fun selectDay(day: JalaliCalendar) {
+    fun selectDay(day: PersianDate) {
         selectedDate = day
     }
 
-    fun changeMonth(newJalali: JalaliCalendar) {
+    fun changeMonth(newJalali: PersianDate) {
         displayedDate = newJalali
     }
 
-    fun changeYear(newJalali: JalaliCalendar) {
+    fun changeYear(newJalali: PersianDate) {
         displayedDate = newJalali
     }
 
@@ -42,15 +42,15 @@ internal class DatePickerState(
     }
 
     fun goToToday() {
-        val tempToday = JalaliCalendar.now()
-        displayedDate = JalaliCalendar(tempToday.year, tempToday.month, 1)
+        val tempToday = PersianDate.now()
+        displayedDate = PersianDate(tempToday.year, tempToday.month, 1)
         selectedDate = tempToday
     }
 }
 
 @Composable
 internal fun rememberDatePickerState(
-    initialDate: JalaliCalendar? = null
+    initialDate: PersianDate? = null
 ): DatePickerState = remember {
     DatePickerState(initialDate)
 }

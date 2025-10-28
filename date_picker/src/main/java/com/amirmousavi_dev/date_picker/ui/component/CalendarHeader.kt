@@ -10,13 +10,13 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.util.FormatDigits
 
 @Composable
 internal fun CalendarHeader(
-    currentDisplayDate: JalaliCalendar,
+    currentDisplayDate: PersianDate,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier

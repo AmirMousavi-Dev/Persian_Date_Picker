@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.window.Dialog
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.model.DatePickerDefaults
 import com.amirmousavi_dev.date_picker.ui.component.PersianCalendarView
@@ -28,11 +28,11 @@ import com.amirmousavi_dev.date_picker.ui.component.PersianCalendarView
 
 @Composable
 fun PersianDatePickerDialog(
-    initialDate: JalaliCalendar? = null,
-    minDate: JalaliCalendar? = null,
-    maxDate: JalaliCalendar? = null,
-    onSelectDay: (JalaliCalendar) -> Unit = {},
-    onConfirm: (JalaliCalendar) -> Unit,
+    initialDate: PersianDate? = null,
+    minDate: PersianDate? = null,
+    maxDate: PersianDate? = null,
+    onSelectDay: (PersianDate) -> Unit = {},
+    onConfirm: (PersianDate) -> Unit,
     onDismissRequest: () -> Unit,
     colors: DatePickerColors = DatePickerDefaults.colors(),
     fontFamily: FontFamily = FontFamily.Default

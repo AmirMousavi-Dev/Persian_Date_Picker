@@ -28,14 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amirmousavi_dev.date_picker.R
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.CalendarDimensions
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.util.FormatDigits
 
 @Composable
 internal fun YearPicker(
-    displayedDate: JalaliCalendar,
+    displayedDate: PersianDate,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     dimensions: CalendarDimensions,

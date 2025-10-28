@@ -17,23 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import com.amirmousavi_dev.date_picker.core.JalaliCalendar
+import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.CalendarDimensions
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.util.FormatDigits
 
 @Composable
 internal fun DayPicker(
-    displayedDate: JalaliCalendar,
-    selectedDate: JalaliCalendar?,
-    today: JalaliCalendar,
-    minDate: JalaliCalendar?,
-    maxDate: JalaliCalendar?,
+    displayedDate: PersianDate,
+    selectedDate: PersianDate?,
+    today: PersianDate,
+    minDate: PersianDate?,
+    maxDate: PersianDate?,
     dimensions: CalendarDimensions,
     colors: DatePickerColors,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier,
-    onSelectDay: (JalaliCalendar) -> Unit
+    onSelectDay: (PersianDate) -> Unit
 ) {
 
     val weekDays = listOf("ش", "ی", "د", "س", "چ", "پ", "ج")
@@ -48,7 +48,7 @@ internal fun DayPicker(
 
 
     val monthLength = displayedDate.monthLength
-    val firstDayOfMonth = JalaliCalendar(displayedDate.year, displayedDate.month, 1)
+    val firstDayOfMonth = PersianDate(displayedDate.year, displayedDate.month, 1)
 
 
     val emptyCellsBefore = (firstDayOfMonth.dayOfWeek - 1 + 7) % 7
@@ -67,7 +67,7 @@ internal fun DayPicker(
             if (dayOfMonth >= 1 && dayOfMonth <= monthLength) {
 
                 val day = dayOfMonth
-                val currentDayDate = JalaliCalendar(displayedDate.year, displayedDate.month, day)
+                val currentDayDate = PersianDate(displayedDate.year, displayedDate.month, day)
                 val currentGregorianDate = currentDayDate.toGregorian()
 
 
