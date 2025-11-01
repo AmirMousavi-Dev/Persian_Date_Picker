@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -57,6 +59,7 @@ dependencies {
 
 
 afterEvaluate {
+
     publishing {
         publications {
             create<MavenPublication>("release") {
@@ -89,6 +92,24 @@ afterEvaluate {
                         developerConnection.set("scm:git:ssh://github.com/AmirMousavi-Dev/Persian_Date_Picker.git")
                         url.set("https://github.com/AmirMousavi-Dev/Persian_Date_Picker/tree/master")
                     }
+                }
+            }
+        }
+
+        repositories {
+            val localProperties = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+            val ossrhUsername = localProperties.getProperty("ossrhUsername")
+            val ossrhPassword = localProperties.getProperty("ossrhPassword")
+            maven {
+                name = "centralPortal"
+                url = uri("https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                    println("OSSRH USERNAME = $ossrhUsername")
+
                 }
             }
         }
