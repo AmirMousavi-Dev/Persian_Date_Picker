@@ -37,13 +37,10 @@ fun PersianDatePickerDialog(
     colors: DatePickerColors = DatePickerDefaults.colors(),
     fontFamily: FontFamily = FontFamily.Default
 ) {
-
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-        Dialog(
-            onDismissRequest = onDismissRequest,
-        ) {
-
-
+    Dialog(
+        onDismissRequest = onDismissRequest,
+    ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             PersianCalendarView(
                 initialDate = initialDate,
                 minDate = minDate,
@@ -55,10 +52,6 @@ fun PersianDatePickerDialog(
                 fontFamily = fontFamily,
             )
         }
-
-
     }
-
-
 }
 
