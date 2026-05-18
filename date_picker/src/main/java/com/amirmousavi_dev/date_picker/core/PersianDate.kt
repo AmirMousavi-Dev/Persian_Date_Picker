@@ -24,7 +24,7 @@ data class PersianDate(
 
     init {
         require(month in 1..12) { "Month must be between 1 and 12, but was $month" }
-        require(day in 1..monthLength) { "Day must be between 1 and $monthLength for month $month, but was $day" }
+        require(day in 1..lengthOfMonth) { "Day must be between 1 and $lengthOfMonth for month $month, but was $day" }
     }
 
 
@@ -38,7 +38,7 @@ data class PersianDate(
     /**
      * The Persian name for the day of the week.
      */
-    val dayOfWeekString: String
+    val dayName: String
         get() = when (dayOfWeek) {
             7 -> "شنبه"
             1 -> "یک‌شنبه"
@@ -51,9 +51,9 @@ data class PersianDate(
         }
 
     /**
-     * The Persian name for the month).
+     * The Persian name for the month.
      */
-    val monthString: String
+    val monthName: String
         get() = when (month) {
             1 -> "فروردین"
             2 -> "اردیبهشت"
@@ -73,29 +73,29 @@ data class PersianDate(
     /**
      * A formatted string of the date (e.g., "1403/07/09").
      */
-    val dateString: String
+    val formattedDate: String
         get() = String.format(Locale.US, "%04d/%02d/%02d", year, month, day)
 
     /**
      * A user-friendly string combining day of the week, day, and month (e.g., "سه‌شنبه ۹ مهر").
      */
-    val dayOfWeekDayMonthString: String
-        get() = "$dayOfWeekString ${FormatDigits.toPersianDigits(day.toString())} $monthString"
+    val fullDateName: String
+        get() = "$dayName ${FormatDigits.toPersianDigits(day.toString())} $monthName"
 
     /**
      * Returns true if the current Persian year is a leap year.
      */
-    val isLeap: Boolean
+    val isLeapYear: Boolean
         get() = getLeapFactor(year) == 0
 
     /**
      * The number of days in the current Persian month.
      */
-    val monthLength: Int
+    val lengthOfMonth: Int
         get() = when {
             month < 7 -> 31
             month < 12 -> 30
-            month == 12 -> if (isLeap) 30 else 29
+            month == 12 -> if (isLeapYear) 30 else 29
             else -> 0
         }
 

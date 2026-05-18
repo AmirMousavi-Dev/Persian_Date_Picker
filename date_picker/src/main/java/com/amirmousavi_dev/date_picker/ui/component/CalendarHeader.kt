@@ -34,7 +34,7 @@ internal fun CalendarHeader(
         )
 
         Text(
-            text = currentDisplayDate.dayOfWeekDayMonthString,
+            text = currentDisplayDate.fullDateName,
             fontFamily = fontFamily,
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp),

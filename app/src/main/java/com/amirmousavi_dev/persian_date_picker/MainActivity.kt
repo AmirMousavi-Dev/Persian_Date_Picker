@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                             isDatePickerVisible = false
                         },
                         onConfirm = {
-                            selectedDate = it.dateString
+                            selectedDate = it.formattedDate
                             isDatePickerVisible = false
                         }
                     )

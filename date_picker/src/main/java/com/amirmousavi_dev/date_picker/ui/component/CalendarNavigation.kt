@@ -93,7 +93,7 @@ internal fun CalendarNavigation(
             )
         ) {
             Text(
-                text = FormatDigits.toPersianDigits(displayedDate.monthString),
+                text = displayedDate.monthName,
                 fontFamily = fontFamily
             )
         }

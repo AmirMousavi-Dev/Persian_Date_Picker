@@ -47,12 +47,12 @@ internal fun DayPicker(
     }
 
 
-    val monthLength = displayedDate.monthLength
+    val lengthOfMonth = displayedDate.lengthOfMonth
     val firstDayOfMonth = PersianDate(displayedDate.year, displayedDate.month, 1)
 
 
     val emptyCellsBefore = (firstDayOfMonth.dayOfWeek - 1 + 7) % 7
-    val totalCells = emptyCellsBefore + monthLength
+    val totalCells = emptyCellsBefore + lengthOfMonth
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
@@ -64,7 +64,7 @@ internal fun DayPicker(
         items(totalCells) { index ->
             val dayOfMonth = index - emptyCellsBefore + 1
 
-            if (dayOfMonth >= 1 && dayOfMonth <= monthLength) {
+            if (dayOfMonth >= 1 && dayOfMonth <= lengthOfMonth) {
 
                 val day = dayOfMonth
                 val currentDayDate = PersianDate(displayedDate.year, displayedDate.month, day)
