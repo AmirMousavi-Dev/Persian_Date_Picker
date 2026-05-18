@@ -1,16 +1,10 @@
 package com.amirmousavi_dev.date_picker.core
 
 import com.amirmousavi_dev.date_picker.util.FormatDigits
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
-import java.util.Locale
 
 /**
  * An immutable, robust representation of a date in the Persian calendar system.
- *
- * Use the factory methods in the companion object (e.g., `PersianDate.now()`,
- * `PersianDate.fromGregorian()`) to create instances.
+ * This class is designed to be platform-independent and compatible with Compose Multiplatform.
  *
  * @property year The Persian year.
  * @property month The Persian month (1-12).
@@ -24,21 +18,19 @@ data class PersianDate(
 
     init {
         require(month in 1..12) { "Month must be between 1 and 12, but was $month" }
-        require(day in 1..monthLength) { "Day must be between 1 and $monthLength for month $month, but was $day" }
+        require(day in 1..lengthOfMonth) { "Day must be between 1 and $lengthOfMonth for month $month, but was $day" }
     }
-
 
     /**
      * The day of the week, where Sunday is 1 and Saturday is 7.
-     * Note: This involves a conversion to Gregorian and may be computationally intensive if used excessively.
      */
     val dayOfWeek: Int
-        get() = toGregorian()[Calendar.DAY_OF_WEEK]
+        get() = ((toJulianDay(year, month, day) + 1) % 7) + 1
 
     /**
      * The Persian name for the day of the week.
      */
-    val dayOfWeekString: String
+    val dayName: String
         get() = when (dayOfWeek) {
             7 -> "شنبه"
             1 -> "یک‌شنبه"
@@ -51,9 +43,9 @@ data class PersianDate(
         }
 
     /**
-     * The Persian name for the month).
+     * The Persian name for the month.
      */
-    val monthString: String
+    val monthName: String
         get() = when (month) {
             1 -> "فروردین"
             2 -> "اردیبهشت"
@@ -71,35 +63,33 @@ data class PersianDate(
         }
 
     /**
-     * A formatted string of the date (e.g., "1403/07/09").
+     * A formatted string of the date in `YYYY/MM/DD` format.
      */
-    val dateString: String
-        get() = String.format(Locale.US, "%04d/%02d/%02d", year, month, day)
+    val formattedDate: String
+        get() = "${year.toString().padStart(4, '0')}/${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}"
 
     /**
      * A user-friendly string combining day of the week, day, and month (e.g., "سه‌شنبه ۹ مهر").
      */
-    val dayOfWeekDayMonthString: String
-        get() = "$dayOfWeekString ${FormatDigits.toPersianDigits(day.toString())} $monthString"
+    val fullDateName: String
+        get() = "$dayName ${FormatDigits.toPersianDigits(day.toString())} $monthName"
 
     /**
      * Returns true if the current Persian year is a leap year.
      */
-    val isLeap: Boolean
+    val isLeapYear: Boolean
         get() = getLeapFactor(year) == 0
 
     /**
      * The number of days in the current Persian month.
      */
-    val monthLength: Int
+    val lengthOfMonth: Int
         get() = when {
             month < 7 -> 31
             month < 12 -> 30
-            month == 12 -> if (isLeap) 30 else 29
+            month == 12 -> if (isLeapYear) 30 else 29
             else -> 0
         }
-
-
 
     /**
      * Returns a new `PersianDate` instance with the given number of days added.
@@ -107,54 +97,51 @@ data class PersianDate(
      * @param days The number of days to add (can be negative to subtract).
      */
     fun plusDays(days: Int): PersianDate {
-        val gc = toGregorian()
-        gc.add(Calendar.DAY_OF_MONTH, days)
-        return fromGregorian(gc)
+        val jd = toJulianDay(year, month, day)
+        return fromJulianDay(jd + days)
     }
 
     /**
      * Converts this `PersianDate` instance to a `java.util.GregorianCalendar` instance.
+     * Note: This is JVM-only and provided for backward compatibility.
      */
-    fun toGregorian(): GregorianCalendar {
-        val julianDay = toJulianDay(year, month, day)
-        return julianDayToGregorianCalendar(julianDay)
+    fun toGregorian(): java.util.GregorianCalendar {
+        val jd = toJulianDay(year, month, day)
+        val j = 4 * jd + 139361631 + (4 * jd + 183187720) / 146097 * 3 / 4 * 4 - 3908
+        val i = (j % 1461) / 4 * 5 + 308
+        val gDay = (i % 153) / 5 + 1
+        val gMonth = ((i / 153) % 12) + 1
+        val gYear = j / 1461 - 100100 + (8 - gMonth) / 6
+        return java.util.GregorianCalendar(gYear, gMonth - 1, gDay)
     }
 
-    /**
-     * Compares this date to another date.
-     *
-     * @return A negative integer, zero, or a positive integer as this date is before,
-     * at the same time, or after the specified date.
-     */
     override fun compareTo(other: PersianDate): Int {
         if (year != other.year) return year.compareTo(other.year)
         if (month != other.month) return month.compareTo(other.month)
         return day.compareTo(other.day)
     }
 
-    /**
-     * Returns a string representation of the date in `YYYY-MM-DD` format.
-     */
     override fun toString(): String {
-        return String.format(Locale.US, "%04d-%02d-%02d", year, month, day)
+        return "${year.toString().padStart(4, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}"
     }
-
 
     companion object {
 
-
         /**
          * Gets the current date in the Persian calendar.
+         * Note: This implementation uses JVM `java.util.Calendar` and should be replaced
+         * with a platform-specific source (like kotlinx-datetime) in Multiplatform environments.
          */
-        
-        fun now(): PersianDate = fromGregorian(GregorianCalendar())
+        fun now(): PersianDate {
+            val gc = java.util.GregorianCalendar()
+            return fromGregorian(gc)
+        }
 
         /**
          * Creates a `PersianDate` instance from a `java.util.Date` object.
          */
-        
-        fun fromDate(date: Date): PersianDate {
-            val gc = GregorianCalendar()
+        fun fromDate(date: java.util.Date): PersianDate {
+            val gc = java.util.GregorianCalendar()
             gc.time = date
             return fromGregorian(gc)
         }
@@ -162,22 +149,28 @@ data class PersianDate(
         /**
          * Creates a `PersianDate` instance from a `java.util.GregorianCalendar` object.
          */
-        
-        fun fromGregorian(gc: GregorianCalendar): PersianDate {
-            val jd = gregorianToJulianDayNumber(gc)
+        fun fromGregorian(gc: java.util.GregorianCalendar): PersianDate {
+            return fromGregorian(
+                gc.get(java.util.Calendar.YEAR),
+                gc.get(java.util.Calendar.MONTH) + 1,
+                gc.get(java.util.Calendar.DAY_OF_MONTH)
+            )
+        }
+
+        /**
+         * Creates a `PersianDate` instance from Gregorian year, month, and day.
+         */
+        fun fromGregorian(year: Int, month: Int, day: Int): PersianDate {
+            val jd = gregorianToJulianDayNumber(year, month, day)
             return fromJulianDay(jd)
         }
 
         /**
          * Creates a `PersianDate` instance from year, month, and day components.
-         * This method is an alias for the data class constructor and will perform validation.
          */
-        
         fun of(year: Int, month: Int, day: Int): PersianDate {
             return PersianDate(year, month, day)
         }
-
-
 
         /** The source of this algorithm is "Calendrical Calculations" by Dershowitz and Reingold. */
         private val breaks = intArrayOf(
@@ -186,19 +179,15 @@ data class PersianDate(
         )
 
         private fun fromJulianDay(julianDayNumber: Int): PersianDate {
-            val gc = julianDayToGregorianCalendar(julianDayNumber)
-            val gregorianYear = gc[GregorianCalendar.YEAR]
+            val gYear = julianDayToGregorianYear(julianDayNumber)
+            var persianYear = gYear - 621
 
-            var persianYear = gregorianYear - 621
-
-
-            var julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(persianYear))
-
+            var julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardinComponents(persianYear))
             var diff = julianDayNumber - julianDayFarvardinFirst
 
             if (diff < 0) {
                 persianYear--
-                julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(persianYear))
+                julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardinComponents(persianYear))
                 diff = julianDayNumber - julianDayFarvardinFirst
             }
 
@@ -218,7 +207,7 @@ data class PersianDate(
         }
 
         private fun toJulianDay(year: Int, month: Int, day: Int): Int {
-            val julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardin(year))
+            val julianDayFarvardinFirst = gregorianToJulianDayNumber(getGregorianFirstFarvardinComponents(year))
             val dayInYear = if (month <= 6) {
                 (month - 1) * 31 + day
             } else {
@@ -227,29 +216,25 @@ data class PersianDate(
             return julianDayFarvardinFirst + dayInYear - 1
         }
 
-        private fun gregorianToJulianDayNumber(gc: GregorianCalendar): Int {
-            val gregorianYear = gc[GregorianCalendar.YEAR]
-            val gregorianMonth = gc[GregorianCalendar.MONTH] + 1
-            val gregorianDay = gc[GregorianCalendar.DAY_OF_MONTH]
-
-            return (((1461 * (gregorianYear + 4800 + (gregorianMonth - 14) / 12)) / 4
-                    + (367 * (gregorianMonth - 2 - 12 * ((gregorianMonth - 14) / 12))) / 12
-                    - (3 * ((gregorianYear + 4900 + (gregorianMonth - 14) / 12) / 100)) / 4 + gregorianDay
-                    - 32075) - (gregorianYear + 100100 + (gregorianMonth - 8) / 6) / 100 * 3 / 4 + 752)
+        private fun gregorianToJulianDayNumber(components: IntArray): Int {
+            return gregorianToJulianDayNumber(components[0], components[1], components[2])
         }
 
-        private fun julianDayToGregorianCalendar(julianDayNumber: Int): GregorianCalendar {
+        private fun gregorianToJulianDayNumber(gYear: Int, gMonth: Int, gDay: Int): Int {
+            return (((1461 * (gYear + 4800 + (gMonth - 14) / 12)) / 4
+                    + (367 * (gMonth - 2 - 12 * ((gMonth - 14) / 12))) / 12
+                    - (3 * ((gYear + 4900 + (gMonth - 14) / 12) / 100)) / 4 + gDay
+                    - 32075) - (gYear + 100100 + (gMonth - 8) / 6) / 100 * 3 / 4 + 752)
+        }
+
+        private fun julianDayToGregorianYear(julianDayNumber: Int): Int {
             val j = 4 * julianDayNumber + 139361631 + (4 * julianDayNumber + 183187720) / 146097 * 3 / 4 * 4 - 3908
             val i = (j % 1461) / 4 * 5 + 308
-
-            val gregorianDay = (i % 153) / 5 + 1
-            val gregorianMonth = ((i / 153) % 12) + 1
-            val gregorianYear = j / 1461 - 100100 + (8 - gregorianMonth) / 6
-
-            return GregorianCalendar(gregorianYear, gregorianMonth - 1, gregorianDay)
+            val gMonth = ((i / 153) % 12) + 1
+            return j / 1461 - 100100 + (8 - gMonth) / 6
         }
 
-        private fun getGregorianFirstFarvardin(persianYear: Int): GregorianCalendar {
+        private fun getGregorianFirstFarvardinComponents(persianYear: Int): IntArray {
             val gregorianYear = persianYear + 621
             var persianLeap = -14
             var jp = breaks[0]
@@ -260,18 +245,17 @@ data class PersianDate(
                 val jm = breaks[j]
                 jump = jm - jp
                 if (persianYear < jm) {
-                    var n = persianYear - jp
+                    val n = persianYear - jp
                     persianLeap += n / 33 * 8 + (n % 33 + 3) / 4
                     if (jump % 33 == 4 && jump - n == 4) persianLeap++
                     val gregorianLeap = (gregorianYear / 4) - ((gregorianYear / 100 + 1) * 3 / 4) - 150
                     marchDay = 20 + (persianLeap - gregorianLeap)
-                    if (jump - n < 6) n = n - jump + (jump + 4) / 33 * 33
                     break
                 }
                 persianLeap += jump / 33 * 8 + (jump % 33) / 4
                 jp = jm
             }
-            return GregorianCalendar(gregorianYear, 2, marchDay)
+            return intArrayOf(gregorianYear, 3, marchDay)
         }
 
         private fun getLeapFactor(persianYear: Int): Int {

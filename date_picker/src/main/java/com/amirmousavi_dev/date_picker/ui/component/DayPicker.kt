@@ -47,12 +47,12 @@ internal fun DayPicker(
     }
 
 
-    val monthLength = displayedDate.monthLength
+    val lengthOfMonth = displayedDate.lengthOfMonth
     val firstDayOfMonth = PersianDate(displayedDate.year, displayedDate.month, 1)
 
 
     val emptyCellsBefore = (firstDayOfMonth.dayOfWeek - 1 + 7) % 7
-    val totalCells = emptyCellsBefore + monthLength
+    val totalCells = emptyCellsBefore + lengthOfMonth
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(7),
@@ -64,21 +64,20 @@ internal fun DayPicker(
         items(totalCells) { index ->
             val dayOfMonth = index - emptyCellsBefore + 1
 
-            if (dayOfMonth >= 1 && dayOfMonth <= monthLength) {
+            if (dayOfMonth >= 1 && dayOfMonth <= lengthOfMonth) {
 
                 val day = dayOfMonth
                 val currentDayDate = PersianDate(displayedDate.year, displayedDate.month, day)
-                val currentGregorianDate = currentDayDate.toGregorian()
 
 
-                val isEnabled = remember(currentGregorianDate, minDate, maxDate) {
-                    val isAfterMin = minDate?.let { currentGregorianDate >= it.toGregorian() } ?: true
-                    val isBeforeMax = maxDate?.let { currentGregorianDate <= it.toGregorian() } ?: true
+                val isEnabled = remember(currentDayDate, minDate, maxDate) {
+                    val isAfterMin = minDate?.let { currentDayDate >= it } ?: true
+                    val isBeforeMax = maxDate?.let { currentDayDate <= it } ?: true
                     isAfterMin && isBeforeMax
                 }
 
-                val isSelected = selectedDate != null && day == selectedDate.day && displayedDate.year == selectedDate.year && displayedDate.month == selectedDate.month
-                val isToday = day == today.day && displayedDate.year == today.year && displayedDate.month == today.month
+                val isSelected = selectedDate == currentDayDate
+                val isToday = today == currentDayDate
 
                 FilledIconButton(
                     onClick = { onSelectDay(currentDayDate) },
