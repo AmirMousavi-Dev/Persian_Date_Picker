@@ -1,22 +1,20 @@
 # Persian Date Picker for Jetpack Compose
 
-A simple, robust, and highly customizable Persian (Jalali) date picker for Jetpack Compose and Compose Multiplatform.
+A simple, robust, and highly customizable Persian (Jalali) date picker for Jetpack Compose.
 
 ## Features
 
-- **Pure Kotlin Core**: Logic is platform-independent and ready for Compose Multiplatform (CMP).
 - **Native RTL Support**: Built-in support for Right-to-Left layout direction.
 - **Highly Customizable**: Full control over colors, fonts, and dimensions.
 - **Leap Year Support**: Accurate Jalali calendar calculations.
+- **State Management**: Includes `PersianDatePickerState` for easy control and state hoisting.
 
 ## Screenshots
 
 <p align="center">
-  <!-- TODO: Add your dialog images here -->
   <img width="400" height="830" src="https://github.com/user-attachments/assets/169af662-f363-456d-9549-5e057d2823c7" alt="Persian Date Picker Dialog" />
   <img width="400" height="830" src="https://github.com/user-attachments/assets/613cddff-6162-40a3-a8b4-7139c9685847" alt="Year Selection View" />
   <img width="400" height="830" src="https://github.com/user-attachments/assets/d2904521-0b30-4cac-b669-a7c90f035324" alt="Month Selection View" />
-
 </p>
 
 ## Installation
@@ -38,11 +36,27 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:1.1.0")
+    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:v1.2.0")
 }
 ```
 
 ## Usage
+
+### Using State (Recommended)
+
+```kotlin
+val datePickerState = rememberPersianDatePickerState()
+
+Button(onClick = { datePickerState.show() }) {
+    Text("نمایش انتخاب‌گر تاریخ")
+}
+
+Text(text = datePickerState.fullDateName)
+
+PersianDatePickerDialog(state = datePickerState)
+```
+
+### Manual Usage
 
 ```kotlin
 var isDatePickerVisible by remember { mutableStateOf(false) }
