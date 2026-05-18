@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:1.1.0")
+    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:v1.1.0")
 }
 ```
 
