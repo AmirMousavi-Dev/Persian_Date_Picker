@@ -68,17 +68,16 @@ internal fun DayPicker(
 
                 val day = dayOfMonth
                 val currentDayDate = PersianDate(displayedDate.year, displayedDate.month, day)
-                val currentGregorianDate = currentDayDate.toGregorian()
 
 
-                val isEnabled = remember(currentGregorianDate, minDate, maxDate) {
-                    val isAfterMin = minDate?.let { currentGregorianDate >= it.toGregorian() } ?: true
-                    val isBeforeMax = maxDate?.let { currentGregorianDate <= it.toGregorian() } ?: true
+                val isEnabled = remember(currentDayDate, minDate, maxDate) {
+                    val isAfterMin = minDate?.let { currentDayDate >= it } ?: true
+                    val isBeforeMax = maxDate?.let { currentDayDate <= it } ?: true
                     isAfterMin && isBeforeMax
                 }
 
-                val isSelected = selectedDate != null && day == selectedDate.day && displayedDate.year == selectedDate.year && displayedDate.month == selectedDate.month
-                val isToday = day == today.day && displayedDate.year == today.year && displayedDate.month == today.month
+                val isSelected = selectedDate == currentDayDate
+                val isToday = today == currentDayDate
 
                 FilledIconButton(
                     onClick = { onSelectDay(currentDayDate) },
