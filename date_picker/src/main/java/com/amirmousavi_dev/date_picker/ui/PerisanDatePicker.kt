@@ -28,6 +28,33 @@ import com.amirmousavi_dev.date_picker.ui.component.PersianCalendarView
 
 @Composable
 fun PersianDatePickerDialog(
+    state: PersianDatePickerState,
+    initialDate: PersianDate? = null,
+    minDate: PersianDate? = null,
+    maxDate: PersianDate? = null,
+    onSelectDay: (PersianDate) -> Unit = {},
+    colors: DatePickerColors = DatePickerDefaults.colors(),
+    fontFamily: FontFamily = FontFamily.Default
+) {
+    if (state.isVisible) {
+        PersianDatePickerDialog(
+            initialDate = initialDate ?: state.selectedDate,
+            minDate = minDate,
+            maxDate = maxDate,
+            onSelectDay = onSelectDay,
+            onConfirm = {
+                state.selectedDate = it
+                state.dismiss()
+            },
+            onDismissRequest = { state.dismiss() },
+            colors = colors,
+            fontFamily = fontFamily
+        )
+    }
+}
+
+@Composable
+fun PersianDatePickerDialog(
     initialDate: PersianDate? = null,
     minDate: PersianDate? = null,
     maxDate: PersianDate? = null,
