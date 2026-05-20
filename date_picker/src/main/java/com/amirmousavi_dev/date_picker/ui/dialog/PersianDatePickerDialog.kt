@@ -1,4 +1,4 @@
-package com.amirmousavi_dev.date_picker.ui
+package com.amirmousavi_dev.date_picker.ui.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -9,6 +9,7 @@ import androidx.compose.ui.window.Dialog
 import com.amirmousavi_dev.date_picker.core.PersianDate
 import com.amirmousavi_dev.date_picker.model.DatePickerColors
 import com.amirmousavi_dev.date_picker.model.DatePickerDefaults
+import com.amirmousavi_dev.date_picker.ui.PersianDatePickerState
 import com.amirmousavi_dev.date_picker.ui.component.PersianCalendarView
 
 /**
@@ -17,15 +18,14 @@ import com.amirmousavi_dev.date_picker.ui.component.PersianCalendarView
  * This composable provides a customizable Jalali DatePicker dialog, allowing users to select a date
  * in the Jalali calendar system.
  *
+ * @param state The state object to control and observe the dialog.
  * @param initialDate The initial date to be shown when the dialog opens. If null, the current date is used.
  * @param minDate The minimum selectable date.
  * @param maxDate The maximum selectable date.
- * @param onConfirm A callback that is invoked when the confirm button is clicked. The selected JalaliCalendar date is passed as a parameter.
- * @param onDismissRequest A callback that is invoked when the user requests to dismiss the dialog (e.g., by tapping outside or pressing the back button).
+ * @param onSelectDay A callback that is invoked when a day is selected.
  * @param colors An object to customize the colors of the date picker dialog. See [com.amirmousavi_dev.date_picker.model.DatePickerDefaults.colors].
  * @param fontFamily The font family to be used for all text within the dialog.
  */
-
 @Composable
 fun PersianDatePickerDialog(
     state: PersianDatePickerState,
@@ -81,4 +81,3 @@ fun PersianDatePickerDialog(
         }
     }
 }
-
