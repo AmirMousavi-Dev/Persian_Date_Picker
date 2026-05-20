@@ -36,6 +36,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -53,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
@@ -62,7 +69,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.github.AmirMousavi-Dev"
             artifactId = "Persian_Date_Picker"
-            version = "1.2.0"
+            version = "1.3.0"
 
             afterEvaluate {
                 from(components["release"])
