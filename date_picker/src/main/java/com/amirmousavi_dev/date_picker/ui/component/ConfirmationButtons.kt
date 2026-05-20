@@ -38,7 +38,30 @@ internal fun ConfirmationButtons(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row {
+
+        val isSelectedToday = selectedDate == today
+        val isViewingTodayMonth = jalali.year == today.year && jalali.month == today.month
+
+
+        val todayButtonAlpha = if (!isSelectedToday || !isViewingTodayMonth) 1f else 0f
+
+        TextButton(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .alpha(todayButtonAlpha),
+            onClick = onGoToToday,
+            enabled = todayButtonAlpha > 0f
+        ) {
+            Text(
+                text = stringResource(id = R.string.today),
+                color = colors.toDayButtonColor,
+                fontWeight = FontWeight.Bold,
+                fontFamily = fontFamily
+            )
+        }
+
+
+        Row(modifier = Modifier.padding(horizontal = 8.dp)) {
 
             Button(
                 modifier = Modifier.padding(start = 8.dp),
@@ -70,25 +93,6 @@ internal fun ConfirmationButtons(
             }
         }
 
-        val isSelectedToday = selectedDate == today
-        val isViewingTodayMonth = jalali.year == today.year && jalali.month == today.month
 
-
-        val todayButtonAlpha = if (!isSelectedToday || !isViewingTodayMonth) 1f else 0f
-
-        TextButton(
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .alpha(todayButtonAlpha),
-            onClick = onGoToToday,
-            enabled = todayButtonAlpha > 0f
-        ) {
-            Text(
-                text = stringResource(id = R.string.today),
-                color = colors.toDayButtonColor,
-                fontWeight = FontWeight.Bold,
-                fontFamily = fontFamily
-            )
-        }
     }
 }

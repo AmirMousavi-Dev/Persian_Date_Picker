@@ -4,6 +4,7 @@ A simple, robust, and highly customizable Persian (Jalali) date picker for Jetpa
 
 ## Features
 
+- **Two UI Styles**: Choose between a classic **Dialog** or a modern **Bottom Sheet** with wheel selection.
 - **Native RTL Support**: Built-in support for Right-to-Left layout direction.
 - **Highly Customizable**: Full control over colors, fonts, and dimensions.
 - **Leap Year Support**: Accurate Jalali calendar calculations.
@@ -36,41 +37,42 @@ dependencyResolutionManagement {
 
 ```kotlin
 dependencies {
-    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:v1.2.0")
+    implementation("com.github.AmirMousavi-Dev:Persian_Date_Picker:v1.3.0")
 }
 ```
 
 ## Usage
 
-### Using State (Recommended)
+### 1. Date Picker Dialog
+A classic calendar grid view in a dialog.
 
 ```kotlin
+import com.amirmousavi_dev.date_picker.ui.dialog.PersianDatePickerDialog
+import com.amirmousavi_dev.date_picker.ui.rememberPersianDatePickerState
+
 val datePickerState = rememberPersianDatePickerState()
 
 Button(onClick = { datePickerState.show() }) {
-    Text("نمایش انتخاب‌گر تاریخ")
+    Text("نمایش انتخاب‌گر تاریخ (دیالوگ)")
 }
-
-Text(text = datePickerState.fullDateName)
 
 PersianDatePickerDialog(state = datePickerState)
 ```
 
-### Manual Usage
+### 2. Date Picker Bottom Sheet
+A modern wheel-based selection system in a bottom sheet.
 
 ```kotlin
-var isDatePickerVisible by remember { mutableStateOf(false) }
-var selectedDate by remember { mutableStateOf("") }
+import com.amirmousavi_dev.date_picker.ui.bottomsheet.PersianDatePickerBottomSheet
+import com.amirmousavi_dev.date_picker.ui.rememberPersianDatePickerState
 
-if (isDatePickerVisible) {
-    PersianDatePickerDialog(
-        onDismissRequest = { isDatePickerVisible = false },
-        onConfirm = { persianDate ->
-            selectedDate = persianDate.formattedDate
-            isDatePickerVisible = false
-        }
-    )
+val datePickerState = rememberPersianDatePickerState()
+
+Button(onClick = { datePickerState.show() }) {
+    Text("نمایش انتخاب‌گر تاریخ (باتم شیت)")
 }
+
+PersianDatePickerBottomSheet(state = datePickerState)
 ```
 
 ### PersianDate Properties
@@ -89,8 +91,7 @@ You can customize the look and feel using `DatePickerDefaults.colors()`:
 
 ```kotlin
 PersianDatePickerDialog(
-    onDismissRequest = { /* ... */ },
-    onConfirm = { /* ... */ },
+    state = datePickerState,
     colors = DatePickerDefaults.colors(
         headerBackgroundColor = MaterialTheme.colorScheme.primary,
         headerTextColor = MaterialTheme.colorScheme.onPrimary,

@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.amirmousavi_dev.date_picker.ui.PersianDatePickerDialog
+import com.amirmousavi_dev.date_picker.ui.bottomsheet.PersianDatePickerBottomSheet
 import com.amirmousavi_dev.date_picker.ui.rememberPersianDatePickerState
 import com.amirmousavi_dev.persian_date_picker.ui.theme.Persian_Date_PickerTheme
 
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
 
-                            PersianDatePickerDialog(state = datePickerState)
+                            PersianDatePickerBottomSheet(state = datePickerState)
                         }
                     }
                 }
