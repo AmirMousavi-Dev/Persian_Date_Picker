@@ -13,9 +13,9 @@ A simple, robust, and highly customizable Persian (Jalali) date picker for Jetpa
 ## Screenshots
 
 <p align="center">
-  <img width="400" height="830" src="https://github.com/user-attachments/assets/169af662-f363-456d-9549-5e057d2823c7" alt="Persian Date Picker Dialog" />
-  <img width="400" height="830" src="https://github.com/user-attachments/assets/613cddff-6162-40a3-a8b4-7139c9685847" alt="Year Selection View" />
-  <img width="400" height="830" src="https://github.com/user-attachments/assets/d2904521-0b30-4cac-b669-a7c90f035324" alt="Month Selection View" />
+  <img width="393" height="828" src="screenshots/dialog-day.png" alt="Persian Date Picker Dialog" />
+  <img width="393" height="828" src="screenshots/dialog-year.png" alt="Year Selection View" />
+  <img width="393" height="828" src="screenshots/dialog-month.png" alt="Month Selection View" />
 </p>
 
 ## Installation
